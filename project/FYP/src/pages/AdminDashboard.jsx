@@ -5,6 +5,10 @@ import Sidebar from '../components/Sidebar';
 import CompanyList from '../components/CompanyList';
 import AssessmentManager from '../components/AssessmentManager';
 import '../styles/Sidebar.css';
+import PDFQuestionParser from './PDFQuestionParser';
+import Dashboard from './Dashboard'
+
+// In renderContent() switch statement, add:
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -110,17 +114,7 @@ const AdminDashboard = () => {
       case 'companies':
         return (
           <div>
-            <div className="page-header">
-              <h1 className="page-title">Manage Companies</h1>
-              <p className="page-subtitle">Add and organize company recruitment materials</p>
-            </div>
-            <CompanyList
-              companies={companies}
-              onCompanyCreated={(company) => setCompanies([company, ...companies])}
-              onCompanySelect={() => {}}
-              onCompanyDelete={(id) => setCompanies(companies.filter(c => c._id !== id))}
-              loading={false}
-            />
+            <Dashboard />
           </div>
         );
       case 'assessments':
@@ -133,6 +127,38 @@ const AdminDashboard = () => {
             <AssessmentManager />
           </div>
         );
+        case 'pdf-parser':
+  return (
+    <div>
+      <div className="page-header">
+        <h1 className="page-title">PDF Question Parser</h1>
+        <p className="page-subtitle">
+          Upload PDF files to automatically extract and create assessments
+        </p>
+      </div>
+
+      <PDFQuestionParser 
+        companies={companies}
+        topics={[]}
+        onAssessmentCreated={loadCompanies}
+      />
+    </div>
+  );
+
+  return (
+    <div>
+      <div className="page-header">
+        <h1 className="page-title">PDF Question Parser</h1>
+        <p className="page-subtitle">Upload PDF files to automatically extract and create assessments</p>
+      </div>
+      <PDFQuestionParser 
+        companies={companies}
+        topics={[]}
+        onAssessmentCreated={loadData}
+      />
+    </div>
+  );
+
       case 'students':
         return (
           <div>
@@ -152,6 +178,7 @@ const AdminDashboard = () => {
               </p>
             </div>
           </div>
+        
         );
       default:
         return null;
